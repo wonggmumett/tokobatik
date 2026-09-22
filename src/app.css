@@ -4789,5 +4789,9 @@ select:focus-visible {
     grid-template-columns: 1fr;
   }
 
-
+  .admin-stat-card,
+  .admin-stat-card.sales {
+    grid-column: auto;
+    min-height: 120px;
+  }
 }
