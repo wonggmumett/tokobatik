@@ -1,0 +1,8 @@
+import { useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+export default function Register(){
+ const [form,setForm]=useState({fullName:"",phone:"",email:"",password:""}),[error,setError]=useState(""),[busy,setBusy]=useState(false);const {register}=useAuth();const nav=useNavigate();
+ async function submit(e){e.preventDefault();setBusy(true);setError("");const r=await register(form);setBusy(false);if(!r.success)return setError(r.error);nav("/");}
+ return <main className="auth-page"><div className="auth-panel"><span className="eyebrow">JOIN THE STORY</span><h1>Buat akun.</h1><p>Jadilah bagian dari perjalanan batik modern Nusantara.</p>{error&&<div className="error">{error}</div>}<form onSubmit={submit}><label>Nama lengkap<input required value={form.fullName} onChange={e=>setForm({...form,fullName:e.target.value})}/></label><label>No. WhatsApp<input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})}/></label><label>Email<input type="email" required value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/></label><label>Password<input type="password" minLength="6" required value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/></label><button className="button dark wide" disabled={busy}>{busy?"Membuat akun...":"Daftar"}</button></form><div className="auth-foot">Sudah punya akun? <Link to="/login">Masuk</Link></div></div></main>
+}

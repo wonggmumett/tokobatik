@@ -1,0 +1,4 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+export default function AdminLogin(){const [e,setE]=useState(""),[p,setP]=useState(""),[err,setErr]=useState("");const {login}=useAuth();const nav=useNavigate();async function go(x){x.preventDefault();const r=await login(e,p);if(!r.success)return setErr(r.error);nav("/admin")}return <main className="auth-page"><div className="auth-panel"><span className="eyebrow">NUSANTARA BATIK / ADMIN</span><h1>Ruang pengelola.</h1>{err&&<div className="error">{err}</div>}<form onSubmit={go}><label>Email<input type="email" value={e} onChange={x=>setE(x.target.value)}/></label><label>Password<input type="password" value={p} onChange={x=>setP(x.target.value)}/></label><button className="button dark wide">Masuk ke dashboard</button></form></div></main>}

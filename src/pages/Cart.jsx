@@ -1,0 +1,9 @@
+import { Link,useNavigate } from "react-router-dom";
+import { Trash2, Minus, Plus, ArrowRight } from "lucide-react";
+import { useCart } from "../context/CartContext";
+const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
+export default function Cart(){
+ const {items,total,update,remove}=useCart(),nav=useNavigate();
+ if(!items.length)return <main className="cart-page empty-cart"><div className="empty-icon">NB</div><h1>Keranjang masih kosong.</h1><p>Temukan batik yang ingin kamu bawa pulang.</p><Link className="button dark" to="/products">Mulai belanja</Link></main>;
+ return <main className="cart-page"><div className="page-title"><span className="eyebrow">YOUR BAG</span><h1>Keranjang belanja</h1></div><div className="cart-layout"><div>{items.map(x=><div className="cart-item" key={x.cartId}><img src={x.product.image||x.product.image_url} alt=""/><div className="cart-item-info"><small>{x.product.category||"Batik"} • {x.size}</small><h3>{x.product.name}</h3><strong>{rupiah(x.product.price)}</strong><div className="qty"><button onClick={()=>update(x.cartId,x.quantity-1)}><Minus/></button>{x.quantity}<button onClick={()=>update(x.cartId,x.quantity+1)}><Plus/></button></div></div><button className="delete" onClick={()=>remove(x.cartId)}><Trash2/></button></div>)}</div><aside className="summary"><span>Ringkasan</span><div><b>Subtotal</b><b>{rupiah(total)}</b></div><small>Ongkir dihitung saat proses checkout.</small><button className="button dark wide" onClick={()=>nav("/checkout")}>Lanjut checkout <ArrowRight size={17}/></button></aside></div></main>
+}
